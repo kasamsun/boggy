@@ -8,6 +8,9 @@
 #include "BoggyAction.h"
 
 
+typedef BOOL (WINAPI *lpfnSetLayeredWindowAttributes)(HWND hWnd, COLORREF cr,BYTE bAlpha, DWORD dwFlags);
+
+
 class C_BoggyWnd : public C_GenericWnd
 {
 	friend class C_BkgWnd;
@@ -54,6 +57,8 @@ private:
 	int m_nScreenSize;
 	BOOL m_bLPressed;
 	BOOL m_bMoveWithNoBitCopy;
+
+	lpfnSetLayeredWindowAttributes m_pSetLayeredWindowAttributes;
 
 	C_BoggyAI * m_pBoggyAI;
 	C_BoggyAction *m_pCurAction;

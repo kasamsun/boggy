@@ -41,44 +41,14 @@ void C_BoggyAction::CreateBoggyBitmap(int nMode)
 	StretchBlt(m_hdcImg,0,0,nImgWd,nImgHg,
 				hdctmp,0,0,bm.bmWidth,bm.bmHeight,SRCCOPY);
 
-	m_hdcImgMsk = CreateCompatibleDC(NULL);
-	m_hbmpImgMsk = CreateBitmap(nImgWd,nImgHg, 1, 1, NULL);
-	m_hbmpImgMskOld = (HBITMAP) SelectObject(m_hdcImgMsk,m_hbmpImgMsk);
-
-	COLORREF cColor = SetBkColor(m_hdcImg, TRANSPARENT_COLOR);
-
-	// create mask picture
-	BitBlt(m_hdcImgMsk,0,0,nImgWd,nImgHg,m_hdcImg,0,0,SRCCOPY);
-	SetBkColor(m_hdcImg, cColor);
-
-	HDC hdctmp2;
-	HBITMAP hbmptmp2,hbmptmpold2;
-
-	hdctmp2 = CreateCompatibleDC(NULL);
-	hbmptmp2 = CreateBitmap(nImgWd,nImgHg,1,1,NULL);
-	hbmptmpold2 = (HBITMAP) SelectObject(hdctmp2,hbmptmp2);
-
-	BitBlt(hdctmp2,0,0,nImgWd,nImgHg,m_hdcImgMsk,0,0,NOTSRCCOPY);
-	// create mask around org picture with ~of mask picture
-	BitBlt(m_hdcImg,0,0,nImgWd,nImgHg,hdctmp2,0,0,SRCAND);
-
 	DeleteObject(SelectObject(hdctmp,hbmptmpold));
 	DeleteDC(hdctmp);
-	DeleteObject(SelectObject(hdctmp2,hbmptmpold2));
-	DeleteDC(hdctmp2);
-	/*/
-	hdcImg = CreateCompatibleDC(NULL);
-	hbmpImg = LoadBitmap(C_Main::hInstance,MAKEINTRESOURCE(nResID));
-	SelectObject(hdcImg,hbmpImg);
-	*/
 }
 
 void C_BoggyAction::DeleteBoggyBitmap()
 {
 	DeleteObject(SelectObject(m_hdcImg,m_hbmpImgOld));
-	DeleteObject(SelectObject(m_hdcImgMsk,m_hbmpImgMskOld));
 	DeleteDC(m_hdcImg);
-	DeleteDC(m_hdcImgMsk);
 }
 
 int C_BoggyAction::IsFinish()

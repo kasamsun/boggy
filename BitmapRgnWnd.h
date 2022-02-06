@@ -6,7 +6,7 @@
 class C_BitmapRgnWnd : public C_GenericWnd
 {
 public:
-	C_BitmapRgnWnd(HWND hwndParent,int nResID,int nMskResID);
+	C_BitmapRgnWnd(HWND hwndParent,int nResID);
 	~C_BitmapRgnWnd();
 
 	///////////////////////////////////////////////////////

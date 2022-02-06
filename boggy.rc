@@ -26,7 +26,6 @@ LANGUAGE 0x1E, 0x1
 // Bitmap
 //
 
-IDB_PREFERMSK           BITMAP  MOVEABLE PURE   "RES\\preferenmsk.bmp"
 #endif    // Unknown language: 0x1E, 0x1 resources
 /////////////////////////////////////////////////////////////////////////////
 

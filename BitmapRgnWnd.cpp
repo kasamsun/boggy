@@ -12,9 +12,9 @@ BEGIN_HANDLE_MSG(C_BitmapRgnWnd,C_GenericWnd)
 	HANDLE_MSG(WM_DESTROY,OnDestroy)
 END_HANDLE_MSG()
 
-HRGN BitmapToRegion (HBITMAP hBmp, COLORREF cTransparentColor=0, COLORREF cTolerance=0x101010);
+HRGN BitmapToRegion (HBITMAP hBmp, COLORREF cTransparentColor=0x008080, COLORREF cTolerance=0x101010);
 
-C_BitmapRgnWnd::C_BitmapRgnWnd( HWND hwndParent,int nResID,int nMskResID )
+C_BitmapRgnWnd::C_BitmapRgnWnd( HWND hwndParent,int nResID )
 {
 	m_hbmpDialog = LoadBitmap(C_App::m_hInstance,MAKEINTRESOURCE(nResID));
 	BITMAP bmpDialog;
@@ -22,8 +22,7 @@ C_BitmapRgnWnd::C_BitmapRgnWnd( HWND hwndParent,int nResID,int nMskResID )
 	m_hWnd = CreateWindow(
 		m_szClassName,
         m_szClassName,
-		//WS_OVERLAPPEDWINDOW,
-        WS_POPUP|WS_VISIBLE,//|WS_CLIPSIBLINGS|WS_SYSMENU|WS_GROUP,
+        WS_POPUP|WS_VISIBLE,
         GetSystemMetrics(SM_CXFULLSCREEN)/2-bmpDialog.bmWidth/2,
         GetSystemMetrics(SM_CYFULLSCREEN)/2-bmpDialog.bmHeight/2,
         bmpDialog.bmWidth,
@@ -41,8 +40,7 @@ C_BitmapRgnWnd::C_BitmapRgnWnd( HWND hwndParent,int nResID,int nMskResID )
 	m_hbmpDialogOld = (HBITMAP) SelectObject(m_hdcDialog,m_hbmpDialog);
 	ReleaseDC(m_hWnd,m_hDC);
 
-	//HRGN MyRgn = CreateBitmapRgn(m_hbmpDialog,TRANSPARENT_COLOR);
-	HBITMAP hbmpMsk = LoadBitmap(C_App::m_hInstance,MAKEINTRESOURCE(nMskResID));
+	HBITMAP hbmpMsk = LoadBitmap(C_App::m_hInstance,MAKEINTRESOURCE(nResID));
 	HRGN MyRgn = BitmapToRegion(hbmpMsk);
 	SetWindowRgn(m_hWnd,MyRgn,TRUE);
 

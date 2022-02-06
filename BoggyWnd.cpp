@@ -9,6 +9,8 @@
 #include "BoggyWnd.h"
 #include "PreferenceWnd.h"
 
+#define WS_EX_LAYERED           0x00080000
+
 BEGIN_HANDLE_MSG(C_BoggyWnd,C_GenericWnd)
 	HANDLE_MSG(WM_PAINT,OnPaint)
 	HANDLE_MSG(WM_ACTIVATE,OnActivate)
@@ -31,7 +33,8 @@ C_BoggyWnd::C_BoggyWnd( C_Wnd *pParentWnd ) : C_GenericWnd(pParentWnd)
 	RANDOMIZE();
 	RANDOM(RAND_MAX);
 
-	m_nScreenSize = TRIPLE_SIZE;
+	
+	m_nScreenSize = DOUBLE_SIZE;
 	m_nWidth = 32*m_nScreenSize;
 	m_nHeight = 32*m_nScreenSize;
 
@@ -42,11 +45,11 @@ C_BoggyWnd::C_BoggyWnd( C_Wnd *pParentWnd ) : C_GenericWnd(pParentWnd)
 	m_bMoveWithNoBitCopy = FALSE;
 
 	m_hWnd = CreateWindowEx(
-                    WS_EX_TOPMOST,
+                    WS_EX_LAYERED |WS_EX_TOPMOST,
                     //0,
                     m_szClassName,
                     m_szClassName,
-                    WS_POPUP,
+                    WS_VISIBLE|WS_POPUP,
                     -32*m_nScreenSize,	// if don't process WM_ERASEBKG,
                                         // must run from outside screen
                     RANDOM(GetSystemMetrics(SM_CYFULLSCREEN)-32*m_nScreenSize),
@@ -59,6 +62,11 @@ C_BoggyWnd::C_BoggyWnd( C_Wnd *pParentWnd ) : C_GenericWnd(pParentWnd)
 
     if ( ! m_hWnd )
         exit( FALSE );
+
+	
+	HMODULE hUser32 = GetModuleHandle("USER32.DLL");
+	m_pSetLayeredWindowAttributes = (lpfnSetLayeredWindowAttributes)GetProcAddress(hUser32, "SetLayeredWindowAttributes");
+	m_pSetLayeredWindowAttributes(m_hWnd,RGB(0, 128, 128),125,1);
 
 	m_pBoggyAI = new C_BoggyAI(this);
 
@@ -98,74 +106,6 @@ void C_BoggyWnd::DeleteBoggySaveBitmap()
 	DeleteDC(m_hdcBkg);
 }
 
-/*
-void C_BoggyWnd::Moving(int direction, int step)
-{
-	RECT rc;
-	HDC hdcsave;
-	HBITMAP hbmpsave,bmsave;
-	HDC hdcsave1;
-	HBITMAP hbmpsave1,bmsave1;
-
-	GetWindowRect(hWnd,&rc);
-	hDC = GetDC(hWnd);
-	hdcsave = CreateCompatibleDC(hDC);
-	hbmpsave = CreateCompatibleBitmap(hDC,nWidth+step,nHeight);
-	hdcsave1 = CreateCompatibleDC(hDC);
-	hbmpsave1 = CreateCompatibleBitmap(hDC,nWidth,nHeight);
-	bmsave = SelectObject(hdcsave,hbmpsave);
-	bmsave1 = SelectObject(hdcsave1,hbmpsave1);
-
-	if ( direction == LEFT )
-	{
-		if ( step > 32*nScreenSize )
-		{
-			MoveWindow(hWnd,rc.left-step,rc.top,nWidth,nHeight,TRUE);
-			//BitBlt(hdcBkg,0,0,nWidth,nHeight,hDC,0,0,SRCCOPY);
-			//MoveWindow(hWnd,rc.left-step,rc.top,nWidth,nHeight,FALSE);
-		}
-		else
-		{
-		BitBlt(hdcsave,step,0,nWidth,nHeight,hdcBkg,0,0,SRCCOPY);
-		MoveWindow(hWnd,rc.left-step,rc.top,nWidth+step,nHeight,FALSE);
-		BitBlt(hdcsave,0,0,step,nHeight,hDC,0,0,SRCCOPY);
-		BitBlt(hdcBkg,0,0,nWidth,nHeight,hdcsave,0,0,SRCCOPY);
-		BitBlt(hdcsave1,0,0,nWidth,nHeight,hdcBkg,0,0,SRCCOPY);
-		TransparentBlt (hdcsave1,0,0,nWidth,nHeight,0,0, TRANSPARENT_COLOR);
-		BitBlt(hdcsave,0,0,nWidth,nHeight,hdcsave1,0,0,SRCCOPY);
-		BitBlt(hDC,0,0,nWidth,nHeight,hdcsave,0,0,SRCCOPY);
-		MoveWindow(hWnd,rc.left-step,rc.top,nWidth-step,nHeight,TRUE);
-		}
-	}
-	else 
-	{
-		if ( step > 32*nScreenSize)
-		{
-			MoveWindow(hWnd,rc.left+step,rc.top,nWidth,nHeight,TRUE);
-			//BitBlt(hdcBkg,0,0,nWidth,nHeight,hDC,0,0,SRCCOPY);
-			//MoveWindow(hWnd,rc.left+step,rc.top,nWidth,nHeight,FALSE);
-		}
-		else
-		{
-		BitBlt(hdcsave,0,0,nWidth,nHeight,hdcBkg,0,0,SRCCOPY);
-		MoveWindow(hWnd,rc.left,rc.top,nWidth+step,nHeight,FALSE);
-		BitBlt(hdcsave,nWidth-step,0,step,nHeight,hDC,nWidth-step,0,SRCCOPY);
-		BitBlt(hdcBkg,0,0,nWidth-step,nHeight,hdcsave,step,0,SRCCOPY);
-		BitBlt(hdcsave1,0,0,nWidth,nHeight,hdcBkg,0,0,SRCCOPY);
-		TransparentBlt (hdcsave1,0,0,nWidth,nHeight,0,0, TRANSPARENT_COLOR);
-		BitBlt(hdcsave,step,0,nWidth,nHeight,hdcsave1,0,0,SRCCOPY);
-		BitBlt(hDC,0,0,nWidth,nHeight,hdcsave,0,0,SRCCOPY);
-		MoveWindow(hWnd,rc.left+step,rc.top,nWidth-step,nHeight,TRUE);
-		}
-	}
-	DeleteObject(SelectObject(hdcsave,bmsave));
-	DeleteObject(SelectObject(hdcsave1,bmsave1));
-	DeleteDC(hdcsave);
-	DeleteDC(hdcsave1);
-
-	ReleaseDC(hWnd,hDC);
-}
-*/
 void C_BoggyWnd::Still()
 {
 	HDC hdcsave;
@@ -177,9 +117,9 @@ void C_BoggyWnd::Still()
 	bmsave = (HBITMAP)SelectObject(hdcsave,hbmpsave);
 
 	BitBlt(hdcsave,0,0,m_nWidth,m_nHeight,m_hdcBkg,0,0,SRCCOPY);
-	BoggyTransparentBlt (hdcsave,0,0,m_nWidth,m_nHeight,m_pCurAction->m_hdcImg,
+	BitBlt (hdcsave,0,0,m_nWidth,m_nHeight,m_pCurAction->m_hdcImg,
 			(m_pCurAction->m_nCurFrame-1)*32*m_nScreenSize,
-			m_pCurAction->m_nDirection*32*m_nScreenSize);
+			m_pCurAction->m_nDirection*32*m_nScreenSize, SRCCOPY);
 	BitBlt(m_hDC,0,0,m_nWidth,m_nHeight,hdcsave,0,0,SRCCOPY);
 
 	DeleteObject(SelectObject(hdcsave,bmsave));
@@ -227,177 +167,27 @@ void C_BoggyWnd::MoveBoggyWindow(int left,int top)
 		sty = 0;eny = -dify;
 	}
 
-/*	if ( abs(difx) > nWidth || 
-			abs(dify) > nHeight )
-	{
-		// no collapse, move windows with nocopybits
-		bMoveWithNoBitCopy = TRUE;
-		MoveWindow(hWnd,left,top,xSize,ySize,TRUE);
-		//TRACE("move with nobitcopy to %ld,%ld\n",left,top);
-		bMoveWithNoBitCopy = FALSE;
-
-		// BUG....... didn't update hdcBkg ... find the way!
-		//hDC = GetDC(hWnd);
-		//BitBlt(hdcBkg,0,0,32*nScreenSize,32*nScreenSize,hDC,0,0,SRCCOPY);
-		//ReleaseDC(hWnd,hDC);
-	}
-	else*/
-	{
-		// collapse, move windows with copybits
-		m_bMoveWithNoBitCopy = FALSE;
-
-		HDC hdcsave;
-		HBITMAP hbmpsave,bmsave;
-		HDC hdcsave1;
-		HBITMAP hbmpsave1,bmsave1;
-
-		m_hDC = GetDC(m_hWnd);
-		hdcsave = CreateCompatibleDC(m_hDC);
-		hbmpsave = CreateCompatibleBitmap(m_hDC,xSize+abs(difx),ySize+abs(dify));//nWidth+step,nHeight);
-		hdcsave1 = CreateCompatibleDC(m_hDC);
-		hbmpsave1 = CreateCompatibleBitmap(m_hDC,xSize,ySize);
-		bmsave = (HBITMAP)SelectObject(hdcsave,hbmpsave);
-		bmsave1 = (HBITMAP)SelectObject(hdcsave1,hbmpsave1);
-
-		// move windows by combination of org and dest
-		MoveWindow(m_hWnd,rc.left-stx,rc.top-sty,xSize+abs(difx),ySize+abs(dify),FALSE);
-		// restore old bkg
-		BitBlt(hdcsave,0,0,m_nWidth,m_nHeight,m_hDC,0,0,SRCCOPY);
-		BitBlt(hdcsave,stx,sty,xSize,ySize,m_hdcBkg,0,0,SRCCOPY);
-		// save new bkg
-		BitBlt(m_hdcBkg,0,0,xSize,ySize,hdcsave,enx,eny,SRCCOPY);
-		// make another bkg copy to use in trans blt
-		BitBlt(hdcsave1,0,0,xSize,ySize,m_hdcBkg,0,0,SRCCOPY);
-		BoggyTransparentBlt (hdcsave1,0,0,xSize,ySize,m_pCurAction->m_hdcImg,
-						(m_pCurAction->m_nCurFrame-1)*32*m_nScreenSize,
-						m_pCurAction->m_nDirection*32*m_nScreenSize);
-		// put new boggy image to dest
-		BitBlt(hdcsave,enx,eny,xSize,ySize,hdcsave1,0,0,SRCCOPY);
-		BitBlt(m_hDC,0,0,m_nWidth,m_nHeight,hdcsave,0,0,SRCCOPY);
-		// move windows to destination
-		MoveWindow(m_hWnd,rc.left-stx+enx,rc.top-sty+eny,xSize,ySize,TRUE);
-
-		DeleteObject(SelectObject(hdcsave,bmsave));
-		DeleteObject(SelectObject(hdcsave1,bmsave1));
-		DeleteDC(hdcsave);
-		DeleteDC(hdcsave1);
-
-		ReleaseDC(m_hWnd,m_hDC);
-	}
-
-}
-
-void C_BoggyWnd::BoggyTransparentBlt (HDC hdc,
-					 int xStart, int yStart,
-					 int xWidth, int yHeight,
-					 HDC hdcSrc,
-					 int xPos, int yPos)//,
-					 //COLORREF cTransparentColor)
-{
-	HBITMAP    /*bmAndBack, */bmAndObject, bmAndMem;//, bmSave;
-	HBITMAP    /*bmBackOld, */bmObjectOld, bmMemOld;//, bmSaveOld;
-	HDC        hdcMem, /*hdcBack,*/ hdcObject, hdcTemp;//, hdcSave;
-	POINT      ptSize;
-	HBITMAP		hbmpTemp,/*hbmptmp,*/bmTemp/*,bmtmp*/;
-	//HDC			hdctmp;
-
-	hdcTemp = CreateCompatibleDC(hdc);
-	//hdctmp = CreateCompatibleDC(hdc);
-
-	hbmpTemp = CreateCompatibleBitmap(hdc,xWidth,yHeight);
-	//hbmptmp = CreateCompatibleBitmap(hdc,xWidth,yHeight);
-
-	bmTemp = (HBITMAP)SelectObject(hdcTemp,hbmpTemp);
-	//bmtmp = SelectObject(hdctmp,hbmptmp);
-
-	//BitBlt(hdcTemp,0,0,xWidth,yHeight,pCurAction->hdcImg,
-	//	(pCurAction->nCurFrame-1)*32*nScreenSize,
-	//	pCurAction->nDirection*32*nScreenSize,SRCCOPY);
-	BitBlt(hdcTemp,0,0,xWidth,yHeight,hdcSrc,xPos,yPos,SRCCOPY);
-
-	ptSize.x = xWidth;            // Get width of bitmap
-	ptSize.y = yHeight;           // Get height of bitmap
-	DPtoLP(hdcTemp, &ptSize, 1);      // Convert from device
-	                                 // to logical points
-	// Create some DCs to hold temporary data.
-//	hdcBack   = CreateCompatibleDC(hdc);
-	hdcObject = CreateCompatibleDC(hdc);
-	hdcMem    = CreateCompatibleDC(hdc);
-	//hdcSave   = CreateCompatibleDC(hdc);
-	// Create a bitmap for each DC.
 	
-	// Monochrome DC
-//	bmAndBack   = CreateBitmap(ptSize.x, ptSize.y, 1, 1, NULL);
+	HDC hdcsave;
+	HBITMAP hbmpsave,bmsave;
+	m_hDC = GetDC(m_hWnd);
+	hdcsave = CreateCompatibleDC(m_hDC);
+	hbmpsave = CreateCompatibleBitmap(m_hDC,xSize,ySize);
+	bmsave = (HBITMAP)SelectObject(hdcsave,hbmpsave);
 	
-	// Monochrome DC
-	bmAndObject = CreateBitmap(ptSize.x, ptSize.y, 1, 1, NULL);
-	bmAndMem    = CreateCompatibleBitmap(hdc, ptSize.x, ptSize.y);
-	//bmSave      = CreateCompatibleBitmap(hdc, ptSize.x, ptSize.y);
 	
-	// Each DC must select a bitmap object to store pixel data.
-//	bmBackOld   = (HBITMAP) SelectObject(hdcBack, bmAndBack);
-	bmObjectOld = (HBITMAP) SelectObject(hdcObject, bmAndObject);
-	bmMemOld    = (HBITMAP) SelectObject(hdcMem, bmAndMem);
-	//bmSaveOld   = (HBITMAP) SelectObject(hdcSave, bmSave);
+	BitBlt(hdcsave,0,0,xSize,ySize,m_pCurAction->m_hdcImg,
+					(m_pCurAction->m_nCurFrame-1)*32*m_nScreenSize,
+					m_pCurAction->m_nDirection*32*m_nScreenSize, SRCCOPY);
+	BitBlt(m_hDC,0,0,m_nWidth,m_nHeight,hdcsave,0,0,SRCCOPY);
 	
-	// Set proper mapping mode.
-	SetMapMode(hdcTemp, GetMapMode(hdc));
-	
-	// Save the bitmap sent here, because it will be overwritten.
-//	BitBlt(hdcSave, 0, 0, ptSize.x, ptSize.y, hdcTemp, 0, 0, SRCCOPY);
-	
-	// Set the background color of the source DC to the color.
-	// contained in the parts of the bitmap that should be transparent
-//	cColor = SetBkColor(hdcTemp, cTransparentColor);
-	
-	// Create the object mask for the bitmap by performing a BitBlt
-	// from the source bitmap to a monochrome bitmap.
-//	BitBlt(hdcObject, 0, 0, ptSize.x, ptSize.y, hdcTemp, 0, 0,
-//	      SRCCOPY);
-	BitBlt(hdcObject,0,0,ptSize.x,ptSize.y,m_pCurAction->m_hdcImgMsk,
-		(m_pCurAction->m_nCurFrame-1)*32*m_nScreenSize,
-		m_pCurAction->m_nDirection*32*m_nScreenSize,SRCCOPY);
-	
-	// Set the background color of the source DC back to the original
-	// color.
-//	SetBkColor(hdcTemp, cColor);
-	
-	// Create the inverse of the object mask.
-//	BitBlt(hdcBack, 0, 0, ptSize.x, ptSize.y, hdcObject, 0, 0,
-//	      NOTSRCCOPY);
-	
-	// Copy the background of the main DC to the destination.
-	BitBlt(hdcMem, 0, 0, ptSize.x, ptSize.y, hdc, xStart, yStart,
-	      SRCCOPY);
-	
-	// Mask out the places where the bitmap will be placed.
-	BitBlt(hdcMem, 0, 0, ptSize.x, ptSize.y, hdcObject, 0, 0, SRCAND);
-	// Mask out the transparent colored pixels on the bitmap.
-//	BitBlt(hdcTemp, 0, 0, ptSize.x, ptSize.y, hdcBack, 0, 0, SRCAND);
-	// XOR the bitmap with the background on the destination DC.
-	BitBlt(hdcMem, 0, 0, ptSize.x, ptSize.y, hdcTemp, 0, 0, SRCPAINT);
-	// Copy the destination to the screen.
-	BitBlt(hdc, xStart, yStart, ptSize.x, ptSize.y, hdcMem, 0, 0,
-	      SRCCOPY);
-	
-	// Place the original bitmap back into the bitmap sent here.
-//	BitBlt(hdcTemp, 0, 0, ptSize.x, ptSize.y, hdcSave, 0, 0, SRCCOPY);
+	MoveWindow(m_hWnd,rc.left-stx+enx,rc.top-sty+eny,xSize,ySize,TRUE);
 
-	// Delete the memory bitmaps.
-	//DeleteObject(SelectObject(hdcBack, bmBackOld));
-	DeleteObject(SelectObject(hdcObject, bmObjectOld));
-	DeleteObject(SelectObject(hdcMem, bmMemOld));
-	//DeleteObject(SelectObject(hdcSave, bmSaveOld));
-	DeleteObject(SelectObject(hdcTemp,bmTemp));
-	//DeleteObject(SelectObject(hdctmp,bmtmp));
+	DeleteObject(SelectObject(hdcsave,bmsave));
+	DeleteDC(hdcsave);
 
-	// Delete the memory DCs.
-	DeleteDC(hdcMem);
-	//DeleteDC(hdcBack);
-	DeleteDC(hdcObject);
-	//DeleteDC(hdcSave);
-	DeleteDC(hdcTemp);
-	//DeleteDC(hdctmp);
+	ReleaseDC(m_hWnd,m_hDC);
+
 }
 
 
@@ -412,9 +202,9 @@ LRESULT C_BoggyWnd::OnPaint(WPARAM wParam,LPARAM lParam)
 		SetTimer(m_hWnd,IDTIMER_UPDATE,TIMER_UPDATE,NULL);
 		m_bFirstActivated = FALSE;
 	}
-	BoggyTransparentBlt (m_hDC,0,0,m_nWidth,m_nHeight,m_pCurAction->m_hdcImg,
+	BitBlt (m_hDC,0,0,m_nWidth,m_nHeight,m_pCurAction->m_hdcImg,
 			(m_pCurAction->m_nCurFrame-1)*32*m_nScreenSize,
-			m_pCurAction->m_nDirection*32*m_nScreenSize);
+			m_pCurAction->m_nDirection*32*m_nScreenSize, SRCCOPY);
     EndPaint( m_hWnd, &ps );
 	return 0;
 }
@@ -571,8 +361,7 @@ LRESULT C_BoggyWnd::OnLButtonDblClk(WPARAM wParam,LPARAM lParam)
 	if ( !bActive )
 	{
 		bActive = TRUE;
-		//C_PreferenceWnd PreferenceWnd(m_hWnd,IDB_PREFERENCE);
-		C_PreferenceWnd PreferenceWnd(m_hWnd,IDB_PREFERENCE,IDB_PREFERMSK);
+		C_PreferenceWnd PreferenceWnd(m_hWnd,IDB_PREFERENCE);
 		bActive = FALSE;
 	}
 	return 0;

@@ -189,10 +189,6 @@ SOURCE=.\res\preferen.bmp
 # End Source File
 # Begin Source File
 
-SOURCE=.\RES\preferenmsk.bmp
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\run.bmp
 # End Source File
 # Begin Source File

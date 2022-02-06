@@ -40,8 +40,6 @@ public:
 public:
 	HDC m_hdcImg;
 	HBITMAP m_hbmpImg,m_hbmpImgOld;
-	HDC m_hdcImgMsk;
-	HBITMAP m_hbmpImgMsk,m_hbmpImgMskOld;
 };
 
 

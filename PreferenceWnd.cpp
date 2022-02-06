@@ -5,8 +5,8 @@ BEGIN_HANDLE_MSG(C_PreferenceWnd,C_BitmapRgnWnd)
 
 END_HANDLE_MSG()
 
-C_PreferenceWnd::C_PreferenceWnd( HWND hwndParent,int nResID,int nMskResID )
-		:C_BitmapRgnWnd(hwndParent,nResID,nMskResID)
+C_PreferenceWnd::C_PreferenceWnd( HWND hwndParent,int nResID)
+		:C_BitmapRgnWnd(hwndParent,nResID)
 {
 	// enter modal loop
 	RunModalLoop();

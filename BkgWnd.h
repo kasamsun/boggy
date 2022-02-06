@@ -1,7 +1,7 @@
 #ifndef _C_BKGWINDOW_H_
 #define _C_BKGWINDOW_H_
 
-#include <MainAfx.h>
+#include "MainAfx.h"
 #include <GenericWnd.h>
 
 class C_BoggyWnd;

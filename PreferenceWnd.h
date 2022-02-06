@@ -6,7 +6,7 @@
 class C_PreferenceWnd : public C_BitmapRgnWnd
 {
 public:
-	C_PreferenceWnd(HWND hwndParent,int nResID,int nMskResID);
+	C_PreferenceWnd(HWND hwndParent,int nResID);
 	~C_PreferenceWnd();
 
     LRESULT WndProc( UINT iMessage, WPARAM wParam, LPARAM lParam );
