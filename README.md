@@ -3,4 +3,7 @@ Boggy is screen mate application running on Windows. In 1998, Still using C++ to
 
 ![alt text](https://raw.githubusercontent.com/kasamsun/boggy/master/assets/boggy1.png "boggy1")
 
+download here - can run on windows 10 
+![alt text](https://raw.githubusercontent.com/kasamsun/boggy/master/assets/boggy-1.0.0.zip "boggy-1.0.0.zip")
+
 
