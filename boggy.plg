@@ -3,58 +3,39 @@
 <pre>
 <h1>Build Log</h1>
 <h3>
---------------------Configuration: boggy - Win32 Release--------------------
+--------------------Configuration: boggy - Win32 Debug--------------------
 </h3>
 <h3>Command Lines</h3>
-Creating command line "rc.exe /l 0x420 /fo".\Release/boggy.res" /d "NDEBUG" "D:\workspace\vs6\boggy\boggy.rc"" 
-Creating temporary file "C:\Users\kasam\AppData\Local\Temp\RSPF155.tmp" with contents
+Creating temporary file "C:\Users\kasam\AppData\Local\Temp\RSP3FD1.tmp" with contents
 [
-/nologo /ML /W3 /GX /O2 /D "WIN32" /D "NDEBUG" /D "_WINDOWS" /D "_MBCS" /Fp".\Release/boggy.pch" /YX /Fo".\Release/" /Fd".\Release/" /FD /c 
-"D:\workspace\vs6\boggy\BitmapRgnWnd.cpp"
-"D:\workspace\vs6\boggy\BkgWnd.cpp"
-"D:\workspace\vs6\boggy\BoggyAction.cpp"
+/nologo /MLd /W3 /Gm /GX /ZI /Od /D "WIN32" /D "_DEBUG" /D "_WINDOWS" /D "_MBCS" /FR".\Debug/" /Fp".\Debug/boggy.pch" /YX /Fo".\Debug/" /Fd".\Debug/" /FD /c 
 "D:\workspace\vs6\boggy\BoggyAI.cpp"
-"D:\workspace\vs6\boggy\BoggyApp.cpp"
-"D:\workspace\vs6\boggy\BoggyWnd.cpp"
-"D:\workspace\vs6\boggy\kswafx\src\GenericWnd.cpp"
-"D:\workspace\vs6\boggy\kswafx\src\MainAfx.cpp"
-"D:\workspace\vs6\boggy\PreferenceWnd.cpp"
 ]
-Creating command line "cl.exe @C:\Users\kasam\AppData\Local\Temp\RSPF155.tmp" 
-Creating temporary file "C:\Users\kasam\AppData\Local\Temp\RSPF156.tmp" with contents
+Creating command line "cl.exe @C:\Users\kasam\AppData\Local\Temp\RSP3FD1.tmp" 
+Creating temporary file "C:\Users\kasam\AppData\Local\Temp\RSP3FD2.tmp" with contents
 [
-kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:no /pdb:".\Release/boggy.pdb" /machine:I386 /out:".\Release/boggy.exe" 
-.\Release\BitmapRgnWnd.obj
-.\Release\BkgWnd.obj
-.\Release\BoggyAction.obj
-.\Release\BoggyAI.obj
-.\Release\BoggyApp.obj
-.\Release\BoggyWnd.obj
-.\Release\GenericWnd.obj
-.\Release\MainAfx.obj
-.\Release\PreferenceWnd.obj
-.\Release\boggy.res
+kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /nologo /subsystem:windows /incremental:yes /pdb:".\Debug/boggy.pdb" /debug /machine:I386 /out:".\Debug/boggy.exe" 
+.\Debug\BitmapRgnWnd.obj
+.\Debug\BkgWnd.obj
+.\Debug\BoggyAction.obj
+.\Debug\BoggyAI.obj
+.\Debug\BoggyApp.obj
+.\Debug\BoggyWnd.obj
+.\Debug\GenericWnd.obj
+.\Debug\MainAfx.obj
+.\Debug\PreferenceWnd.obj
+.\Debug\boggy.res
 ]
-Creating command line "link.exe @C:\Users\kasam\AppData\Local\Temp\RSPF156.tmp"
+Creating command line "link.exe @C:\Users\kasam\AppData\Local\Temp\RSP3FD2.tmp"
 <h3>Output Window</h3>
-Compiling resources...
 Compiling...
-BitmapRgnWnd.cpp
-BkgWnd.cpp
-BoggyAction.cpp
 BoggyAI.cpp
-BoggyApp.cpp
-BoggyWnd.cpp
-GenericWnd.cpp
-MainAfx.cpp
-PreferenceWnd.cpp
-D:\workspace\vs6\boggy\PreferenceWnd.cpp(6) : warning C4065: switch statement contains 'default' but no 'case' labels
 Linking...
 
 
 
 <h3>Results</h3>
-boggy.exe - 0 error(s), 1 warning(s)
+boggy.exe - 0 error(s), 0 warning(s)
 </pre>
 </body>
 </html>

@@ -18,7 +18,6 @@ BEGIN_HANDLE_MSG(C_BoggyWnd,C_GenericWnd)
 	HANDLE_MSG(WM_MOVE,OnMove)
 	HANDLE_MSG(WM_NCCALCSIZE,OnNCCalcSize)
 	HANDLE_MSG(WM_TIMER,OnTimer)
-	HANDLE_MSG(WM_ERASEBKGND,OnEraseBkgnd)
 	HANDLE_MSG(WM_LBUTTONDOWN,OnLButtonDown)
 	HANDLE_MSG(WM_MOUSEMOVE,OnMouseMove)
 	HANDLE_MSG(WM_LBUTTONUP,OnLButtonUp)
@@ -66,13 +65,14 @@ C_BoggyWnd::C_BoggyWnd( C_Wnd *pParentWnd ) : C_GenericWnd(pParentWnd)
 	
 	HMODULE hUser32 = GetModuleHandle("USER32.DLL");
 	m_pSetLayeredWindowAttributes = (lpfnSetLayeredWindowAttributes)GetProcAddress(hUser32, "SetLayeredWindowAttributes");
-	m_pSetLayeredWindowAttributes(m_hWnd,RGB(0, 128, 128),125,1);
+	m_pSetLayeredWindowAttributes(m_hWnd,TRANSPARENT_COLOR,125,1);
 
 	m_pBoggyAI = new C_BoggyAI(this);
 
 	m_pAction[STAND]		= new C_BoggyAction(2,2,0,IDB_STAND,m_nScreenSize);
-	m_pAction[RUN]		= new C_BoggyAction(6,1,5,IDB_RUN,m_nScreenSize);
-	m_pAction[RUN_SLOBBER]= new C_BoggyAction(6,1,5,IDB_RUNS,m_nScreenSize);
+	m_pAction[STAND_SLOBBER]= new C_BoggyAction(4,1,0,IDB_STANDS,m_nScreenSize);
+	m_pAction[RUN]			= new C_BoggyAction(6,1,5,IDB_RUN,m_nScreenSize);
+	m_pAction[RUN_SLOBBER]	= new C_BoggyAction(6,1,5,IDB_RUNS,m_nScreenSize);
 
 	m_pCurAction = m_pAction[RUN];
 	m_pCurAction->StartAction(RIGHT);
@@ -90,22 +90,6 @@ C_BoggyWnd::~C_BoggyWnd()
 
 }
 
-void C_BoggyWnd::CreateBoggySaveBitmap(int nMode)
-{
-	m_hDC = GetDC(m_hWnd);
-
-	m_hbmpBkg = CreateCompatibleBitmap(m_hDC,m_nWidth,m_nHeight);
-	m_hdcBkg = CreateCompatibleDC(m_hDC);
-	m_hbmpBkgOld = (HBITMAP) SelectObject(m_hdcBkg,m_hbmpBkg);
-	ReleaseDC(m_hWnd,m_hDC);
-}
-
-void C_BoggyWnd::DeleteBoggySaveBitmap()
-{
-	DeleteObject(SelectObject(m_hdcBkg,m_hbmpBkgOld));
-	DeleteDC(m_hdcBkg);
-}
-
 void C_BoggyWnd::Still()
 {
 	HDC hdcsave;
@@ -116,7 +100,6 @@ void C_BoggyWnd::Still()
 	hbmpsave = CreateCompatibleBitmap(m_hDC,m_nWidth,m_nHeight);
 	bmsave = (HBITMAP)SelectObject(hdcsave,hbmpsave);
 
-	BitBlt(hdcsave,0,0,m_nWidth,m_nHeight,m_hdcBkg,0,0,SRCCOPY);
 	BitBlt (hdcsave,0,0,m_nWidth,m_nHeight,m_pCurAction->m_hdcImg,
 			(m_pCurAction->m_nCurFrame-1)*32*m_nScreenSize,
 			m_pCurAction->m_nDirection*32*m_nScreenSize, SRCCOPY);
@@ -198,7 +181,6 @@ LRESULT C_BoggyWnd::OnPaint(WPARAM wParam,LPARAM lParam)
     m_hDC = BeginPaint( m_hWnd, &ps );
 	if ( m_bFirstActivated )
 	{
-		CreateBoggySaveBitmap(TRIPLE_SIZE);
 		SetTimer(m_hWnd,IDTIMER_UPDATE,TIMER_UPDATE,NULL);
 		m_bFirstActivated = FALSE;
 	}
@@ -213,7 +195,6 @@ LRESULT C_BoggyWnd::OnActivate(WPARAM wParam,LPARAM lParam)
 {
 	if ( m_bFirstActivated )
 	{
-		CreateBoggySaveBitmap(TRIPLE_SIZE);
 		SetTimer(m_hWnd,IDTIMER_UPDATE,TIMER_UPDATE,NULL);
 		m_bFirstActivated = FALSE;
 	}
@@ -285,9 +266,6 @@ LRESULT C_BoggyWnd::OnTimer(WPARAM wParam,LPARAM lParam)
 			{
 				MoveBoggyWindow(rc.left+(m_pCurAction->m_nMoveStep*m_nScreenSize),rc.top);
 			}
-			////// old moving
-			//Moving(pCurAction->nDirection,
-			//			pCurAction->nMoveStep*nScreenSize);
 			}
 			break;
 		case STILL:
@@ -306,14 +284,6 @@ LRESULT C_BoggyWnd::OnTimer(WPARAM wParam,LPARAM lParam)
 	InvalidateRect(GetParentWnd()->GetHandle(),NULL,FALSE);
 #endif
 	return 0;
-}
-
-LRESULT C_BoggyWnd::OnEraseBkgnd(WPARAM wParam,LPARAM lParam)
-{
-	// top most called once
-	// if first appearence is somewhere on screen
-	BitBlt (m_hdcBkg,0,0,m_nWidth,m_nHeight,(HDC)wParam,0,0, SRCCOPY);
-	return 1;
 }
 
 LRESULT C_BoggyWnd::OnLButtonDown(WPARAM wParam,LPARAM lParam)
@@ -382,7 +352,6 @@ LRESULT C_BoggyWnd::OnRButtonUp(WPARAM wParam,LPARAM lParam)
 LRESULT C_BoggyWnd::OnDestroy(WPARAM wParam,LPARAM lParam)
 {
  	KillTimer(m_hWnd,IDTIMER_UPDATE);
-	DeleteBoggySaveBitmap();
 	PostQuitMessage( 0 );
 	return 0;
 }

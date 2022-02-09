@@ -177,10 +177,6 @@ SOURCE=.\PreferenceWnd.h
 # PROP Default_Filter "ico;cur;bmp;dlg;rc2;rct;bin;cnt;rtf;gif;jpg;jpeg;jpe"
 # Begin Source File
 
-SOURCE=.\Res\bitmap1.bmp
-# End Source File
-# Begin Source File
-
 SOURCE=.\res\boggy.ico
 # End Source File
 # Begin Source File
@@ -202,6 +198,10 @@ SOURCE=.\res\skull.cur
 # Begin Source File
 
 SOURCE=.\res\stand.bmp
+# End Source File
+# Begin Source File
+
+SOURCE=.\RES\stands.bmp
 # End Source File
 # End Group
 # End Target

@@ -50,8 +50,6 @@ protected:
 	int m_bDestroy;
 	WORD m_nPosX,m_nPosY;
 private:
-	HDC m_hdcBkg;
-	HBITMAP m_hbmpBkg,m_hbmpBkgOld;
 
 	int m_nWidth,m_nHeight;
 	int m_nScreenSize;
@@ -62,7 +60,7 @@ private:
 
 	C_BoggyAI * m_pBoggyAI;
 	C_BoggyAction *m_pCurAction;
-	C_BoggyAction *m_pAction[3];
+	C_BoggyAction *m_pAction[10];
 };
 
 

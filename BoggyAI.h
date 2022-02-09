@@ -13,6 +13,7 @@ public:// public on debugging to show in other window
 						//  direction   action no.
 	int m_nHowLong;
 	int m_nBoggyMode;
+	int m_nPower;
 
 public:
 	C_BoggyAI(C_BoggyWnd * pBoggyWnd);
