@@ -8,8 +8,6 @@
 #define IDB_STAND                       118
 #define IDC_BOGGY                       119
 #define IDI_BOGGY                       120
-#define IDB_BITMAP1                     122
-#define IDB_PREFERMSK                   122
 #define IDB_STANDS                      123
 
 // Next default values for new objects

@@ -20,7 +20,7 @@ int C_BoggyAI::RunComeAndGo()
 {
 	int direction = 0;
 	int action = 0;
-	static x = 0;
+	static int x = 0;
 
 	if ( x < 20 ) {
 		if ( x >= 9 && x <= 19 ) {

@@ -228,7 +228,7 @@ LRESULT C_BoggyWnd::OnTimer(WPARAM wParam,LPARAM lParam)
 {
 	if ( m_bLPressed )
 	{
-		static tmp=FALSE;
+		static boolean tmp=FALSE;
 		tmp = ~tmp;
 		if ( tmp )
 		{
@@ -327,7 +327,7 @@ LRESULT C_BoggyWnd::OnLButtonUp(WPARAM wParam,LPARAM lParam)
 
 LRESULT C_BoggyWnd::OnLButtonDblClk(WPARAM wParam,LPARAM lParam)
 {
-	static bActive = FALSE;
+	static boolean bActive = FALSE;
 	if ( !bActive )
 	{
 		bActive = TRUE;
