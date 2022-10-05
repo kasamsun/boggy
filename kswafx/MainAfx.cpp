@@ -1,4 +1,4 @@
-#include <MainAfx.h>
+#include "MainAfx.h"
 #include <stdio.h>
 
 #ifdef _DEBUG

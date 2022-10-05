@@ -1,4 +1,4 @@
-#include <GenericWnd.h>
+#include "GenericWnd.h"
 
 char C_GenericWnd::m_szClassName[] = "";
 

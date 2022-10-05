@@ -1,7 +1,7 @@
 #ifndef _C_GENERICWINDOW_H_
 #define _C_GENERICWINDOW_H_
 
-#include <MainAfx.h>
+#include "MainAfx.h"
 
 class C_GenericWnd : public C_Wnd
 {

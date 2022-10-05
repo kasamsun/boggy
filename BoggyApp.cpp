@@ -1,6 +1,6 @@
 
-#include "MainAfx.h"
-#include "GenericWnd.h"
+#include "kswafx/MainAfx.h"
+#include "kswafx/GenericWnd.h"
 
 #include "BkgWnd.h"
 #include "resource.h"

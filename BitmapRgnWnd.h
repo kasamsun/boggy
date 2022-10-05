@@ -1,7 +1,7 @@
 #ifndef _C_BITMAPRGNWND_H_
 #define _C_BITMAPRGNWND_H_
 
-#include "GenericWnd.h"
+#include "kswafx/GenericWnd.h"
 
 class C_BitmapRgnWnd : public C_GenericWnd
 {

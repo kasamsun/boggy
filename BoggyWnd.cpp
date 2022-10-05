@@ -1,5 +1,5 @@
 
-#include "MainAfx.h"
+#include "kswafx/MainAfx.h"
 #include <time.h>
 #include <stdlib.h>
 #include <stdio.h>
