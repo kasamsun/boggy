@@ -1,8 +1,8 @@
 #ifndef _C_BOGGY_H_
 #define _C_BOGGY_H_
 
-#include <MainAfx.h>
-#include <GenericWnd.h>
+#include "MainAfx.h"
+#include "GenericWnd.h"
 
 #include "BoggyAI.h"
 #include "BoggyAction.h"

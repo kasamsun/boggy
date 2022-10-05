@@ -1,5 +1,6 @@
-#include <MainAfx.h>
-#include <GenericWnd.h>
+
+#include "MainAfx.h"
+#include "GenericWnd.h"
 
 #include "BkgWnd.h"
 #include "resource.h"

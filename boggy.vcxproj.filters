@@ -33,13 +33,13 @@
     <ClCompile Include="BoggyWnd.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\kswafx\src\GenericWnd.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\kswafx\src\MainAfx.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="PreferenceWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kswafx\GenericWnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="kswafx\MainAfx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -67,16 +67,16 @@
     <ClInclude Include="BoggyWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\kswafx\include\GenericWnd.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\kswafx\include\MainAfx.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="PreferenceWnd.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="resource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kswafx\GenericWnd.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="kswafx\MainAfx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

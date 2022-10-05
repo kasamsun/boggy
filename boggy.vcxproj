@@ -17,13 +17,13 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <PlatformToolset>v142</PlatformToolset>
+    <PlatformToolset>v143</PlatformToolset>
     <UseOfMfc>false</UseOfMfc>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
@@ -51,6 +51,12 @@
     <IntDir>.\Debug\</IntDir>
     <LinkIncremental>true</LinkIncremental>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <PublicIncludeDirectories>
+    </PublicIncludeDirectories>
+    <IncludePath>D:\workspace\vs\boggy\kswafx;$(IncludePath)</IncludePath>
+    <SourcePath>D:\workspace\vs\boggy\kswafx;$(SourcePath)</SourcePath>
+    <ExternalIncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);</ExternalIncludePath>
+    <ExcludePath>$(CommonExcludePath);$(VC_ExecutablePath_x86);$(VC_LibraryPath_x86)</ExcludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -102,7 +108,7 @@
       <WarningLevel>Level3</WarningLevel>
       <SuppressStartupBanner>true</SuppressStartupBanner>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
-      <AdditionalIncludeDirectories>D:\workspace\vs6\boggykswafx\src;D:\workspace\vs6\boggy\kswafx\include;D:\workspace\vs6\boggy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\workspace\vs6\boggy\kswafx\src;D:\workspace\vs6\boggy\kswafx\include;D:\workspace\vs6\boggy;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalOptions>/MACHINE:I386 %(AdditionalOptions)</AdditionalOptions>
@@ -126,28 +132,28 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\kswafx\src\GenericWnd.cpp" />
-    <ClCompile Include="..\kswafx\src\MainAfx.cpp" />
     <ClCompile Include="BitmapRgnWnd.cpp" />
     <ClCompile Include="BkgWnd.cpp" />
     <ClCompile Include="BoggyAction.cpp" />
     <ClCompile Include="BoggyAI.cpp" />
     <ClCompile Include="BoggyApp.cpp" />
     <ClCompile Include="BoggyWnd.cpp" />
+    <ClCompile Include="kswafx\GenericWnd.cpp" />
+    <ClCompile Include="kswafx\MainAfx.cpp" />
     <ClCompile Include="PreferenceWnd.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="boggy.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\kswafx\include\GenericWnd.h" />
-    <ClInclude Include="..\kswafx\include\MainAfx.h" />
     <ClInclude Include="BitmapRgnWnd.h" />
     <ClInclude Include="BkgWnd.h" />
     <ClInclude Include="BoggyAction.h" />
     <ClInclude Include="BoggyAI.h" />
     <ClInclude Include="BoggyApp.h" />
     <ClInclude Include="BoggyWnd.h" />
+    <ClInclude Include="kswafx\GenericWnd.h" />
+    <ClInclude Include="kswafx\MainAfx.h" />
     <ClInclude Include="PreferenceWnd.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
